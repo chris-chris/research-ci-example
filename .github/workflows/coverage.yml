@@ -25,10 +25,14 @@ jobs:
           python -m pip install --upgrade pip
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
         
+      - name: Run unit test
+        run: |
+          coverage run --source=./ -m unittest discover -p "*_test.py"
+        
       - name: Publish code coverage
         uses: paambaati/codeclimate-action@v3.0.0
         with:
-          coverageCommand: coverage run --source=./ -m unittest discover -p "*_test.py" && coverage xml
+          coverageCommand: coverage xml
           coverageLocations: ${{github.workspace}}/coverage.xml:coverage.py
         env:
           CC_TEST_REPORTER_ID: b963243584f57859c4b4b397b094239e9c6de058c7f1b65e673796b55af13844
